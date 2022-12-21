@@ -11,7 +11,7 @@ public class TestCalc {
         String validItem = "булка";
         JSONObject jsonBody = (JSONObject) calculations.maxCategory(validItem, 100l).get("maxCategory");
         String actual = (String) jsonBody.get("category");
-        String expected = "еда";
+        String expected = "другое";
 
         Assertions.assertEquals(expected, actual);
     }
