@@ -6,12 +6,15 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 
 
 public class Main {
     public static void main(String[] args) throws IOException {
         Calculations calculations = new Calculations();
-        calculations.run();
+        File tsvFile = new File("categories.tsv");
+        ReaderTsv readerTsv = new ReaderTsv();
+        HashMap<String, String> categoryItems = new HashMap<>();
 
         System.out.println("Server run");
         try (ServerSocket serverSocket = new ServerSocket(8989);) { // стартуем сервер один(!) раз
@@ -22,21 +25,19 @@ public class Main {
                         PrintWriter out = new PrintWriter(socket.getOutputStream());
                 ) {
                     out.println("hi, bro! I am server :)");
+                    categoryItems = readerTsv.run(tsvFile);
                     out.flush();
                     String fromClient = in.readLine();
                     System.out.println(fromClient);
 
-                    //out.println("end");
-                    //out.flush();
                     try {
                         JSONObject jsonObject = (JSONObject) new JSONParser().parse(fromClient);
 
                         System.out.println(calculations.parseData((String) jsonObject.get("date")));
-                        //System.out.println(calculations.maxCategory((String)
-                        //        jsonObject.get("title"), (Long) jsonObject.get("sum")));
+
 
                         out.println((calculations.maxCategory((String)
-                                jsonObject.get("title"), (Long) jsonObject.get("sum"))));
+                                jsonObject.get("title"), (Long) jsonObject.get("sum"), categoryItems)));
 
 
                     } catch (NullPointerException ex) {

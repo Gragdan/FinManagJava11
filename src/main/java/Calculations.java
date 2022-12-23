@@ -20,22 +20,10 @@ public class Calculations {
         this.categoryItems = categoryItems;
     }
 
-    public void run() {
-        File tsvFile = new File("categories.tsv");
-
-        try (
-                BufferedReader br = new BufferedReader(new FileReader(tsvFile))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("\t");
-                categoryItems.put(parts[0], parts[1]);
-            }
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+   // File tsvFile = new File("categories.tsv");
+  //  ReaderTsv readerTsv = new ReaderTsv();
+    // readerTsv.run(tsvFile);
+  //  readerTsv.
 
     public LocalDate parseData(String stringFromClient) throws ParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu.MM.dd");
@@ -43,7 +31,7 @@ public class Calculations {
         return date;
     }
 
-    public JSONObject maxCategory(String item, Long payment) {
+    public JSONObject maxCategory(String item, Long payment, HashMap<String, String> categoryItems) {
         String category = categoryItems.get(item);
         if (categoryItems.get(item) == null) {
             category = "другое";
